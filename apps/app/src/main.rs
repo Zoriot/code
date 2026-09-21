@@ -11,6 +11,9 @@ use tauri::{Listener, Manager};
 use tauri_plugin_fs::FsExt;
 use theseus::prelude::*;
 
+type AppHandle = tauri::AppHandle<tauri::Cef>;
+type Window = tauri::Window<tauri::Cef>;
+
 mod api;
 
 #[cfg(target_os = "macos")]
@@ -25,7 +28,7 @@ mod updater_impl_noop;
 #[tracing::instrument(skip_all)]
 #[tauri::command]
 async fn initialize_state(
-    app: tauri::AppHandle,
+    app: AppHandle,
     events: tauri::ipc::Channel<tauri::ipc::InvokeResponseBody>,
 ) -> api::Result<()> {
     tracing::info!("Initializing app event state...");
@@ -50,7 +53,7 @@ async fn initialize_state(
 // Should be call once Vue has mounted the app
 #[tracing::instrument(skip_all)]
 #[tauri::command]
-fn show_window(app: tauri::AppHandle) {
+fn show_window(app: AppHandle) {
     let win = app.get_window("main").unwrap();
     if let Err(e) = win.show() {
         DialogBuilder::message()
@@ -87,7 +90,7 @@ pub use updater_impl_noop::*;
 
 // Toggles decorations
 #[tauri::command]
-async fn toggle_decorations(b: bool, window: tauri::Window) -> api::Result<()> {
+async fn toggle_decorations(b: bool, window: Window) -> api::Result<()> {
     window.set_decorations(b).map_err(|e| {
         theseus::Error::from(theseus::ErrorKind::OtherError(format!(
             "Failed to toggle decorations: {e}"
@@ -97,7 +100,7 @@ async fn toggle_decorations(b: bool, window: tauri::Window) -> api::Result<()> {
 }
 
 #[tauri::command]
-fn restart_app(app: tauri::AppHandle) {
+fn restart_app(app: AppHandle) {
     app.restart();
 }
 
@@ -115,6 +118,10 @@ async fn set_restart_after_pending_update(
 // if Tauri app is called with arguments, then those arguments will be treated as commands
 // ie: deep links or filepaths for .mrpacks
 fn main() {
+    rustls::crypto::aws_lc_rs::default_provider()
+        .install_default()
+        .expect("failed to install rustls crypto provider");
+
     #[cfg(feature = "export-app-events")]
     theseus::export_app_event_bindings(
         std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -143,7 +150,15 @@ fn main() {
 
     tracing::info!("Initialized tracing subscriber. Loading Modrinth App!");
 
-    let mut builder = tauri::Builder::default();
+    let mut builder = tauri::Builder::<tauri::Cef>::new();
+
+    #[cfg(target_os = "linux")]
+    {
+        builder = builder.command_line_args([
+            ("no-sandbox", Some("true")),
+            ("no-zygote", Some("true")),
+        ]);
+    }
 
     #[cfg(target_os = "macos")]
     {

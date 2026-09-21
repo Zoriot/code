@@ -207,13 +207,13 @@ strum = "0.27.2"
 syn = { version = "2.0" }
 sysinfo = { version = "0.37.2", default-features = false }
 tar = "0.4.44"
-tauri = "2.11.5"
-tauri-build = "2.6.3"
+tauri = { version = "2.11.2", default-features = false }
+tauri-build = "2.6.2"
 tauri-plugin-deep-link = "2.4.3"
-tauri-plugin-dialog = "2.4.0"
+tauri-plugin-dialog = "2.7.3"
 tauri-plugin-fs = "2.4.5"
 tauri-plugin-http = "2.5.7"
-tauri-plugin-opener = "2.5.0"
+tauri-plugin-opener = "2.5.5"
 tauri-plugin-os = "2.3.1"
 tauri-plugin-single-instance = "2.3.4"
 tauri-plugin-updater = { git = "https://github.com/modrinth/plugins-workspace", rev = "0d30f2aa28ec668ce187d527da1c475da3c01cbc", default-features = false, features = [
@@ -221,6 +221,7 @@ tauri-plugin-updater = { git = "https://github.com/modrinth/plugins-workspace", 
   "zip",
 ] }
 tauri-plugin-window-state = "2.4.0"
+tauri-runtime-cef = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
 tempfile = "3.23.0"
 theseus = { path = "packages/app-lib" }
 thiserror = "2.0.17"
@@ -306,13 +307,13 @@ wildcard_dependencies = "warn"
 # Pin the upstream Tao 0.36 upgrade until a Tauri release includes the Windows input deadlock fix.
 # https://github.com/tauri-apps/tauri/pull/15307
 [patch.crates-io]
-tauri = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-build = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-codegen = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-macros = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-runtime = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-runtime-wry = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
-tauri-utils = { git = "https://github.com/tauri-apps/tauri", rev = "7cc68e74ff6981f5c50a52a67d56c5eb2d227188" }
+tauri = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-build = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-codegen = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-macros = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-runtime = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-runtime-wry = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
+tauri-utils = { git = "https://github.com/tauri-apps/tauri", rev = "488243bbdecafeebb92bf5a3da33a8f52ad42970" }
 
 [profile.dev.package.sqlx-macros]
 opt-level = 3

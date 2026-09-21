@@ -13,6 +13,11 @@ use uuid::Uuid;
 
 use crate::install::InstallJobSnapshot;
 
+#[cfg(feature = "tauri")]
+type AppHandle = tauri::AppHandle<tauri::Cef>;
+#[cfg(feature = "tauri")]
+type Window = tauri::Window<tauri::Cef>;
+
 pub mod emit;
 
 // Global event state
@@ -21,7 +26,7 @@ static EVENT_STATE: OnceCell<Arc<EventState>> = OnceCell::const_new();
 pub struct EventState {
     /// Tauri app
     #[cfg(feature = "tauri")]
-    pub app: tauri::AppHandle,
+    pub app: AppHandle,
     #[cfg(feature = "tauri")]
     event_channel: RwLock<Channel<InvokeResponseBody>>,
     pub loading_bars: DashMap<Uuid, LoadingBar>,
@@ -30,7 +35,7 @@ pub struct EventState {
 impl EventState {
     #[cfg(feature = "tauri")]
     pub async fn init(
-        app: tauri::AppHandle,
+        app: AppHandle,
         event_channel: Channel<InvokeResponseBody>,
     ) -> crate::Result<Arc<Self>> {
         let state = EVENT_STATE
@@ -88,7 +93,7 @@ impl EventState {
     /// The ads child webview makes the main window a multi-webview window,
     /// so Tauri's single-webview window lookup no longer returns it.
     #[cfg(feature = "tauri")]
-    pub async fn get_main_window() -> crate::Result<Option<tauri::Window>> {
+    pub async fn get_main_window() -> crate::Result<Option<Window>> {
         use tauri::Manager;
         let value = Self::get();
         Ok(value.app.get_window("main"))
@@ -201,6 +206,9 @@ fn fix_postcard_javascript_utf8(
     const UTF8: &str = "deserialize_string = () => new TextDecoder().decode(new Uint8Array(this.pop_n(Number(this.try_take(U32_BYTES)))))";
 
     let javascript = std::fs::read_to_string(output)?;
+    if javascript.contains(UTF8) {
+        return Ok(());
+    }
     if !javascript.contains(GENERATED) {
         return Err(
             "postcard-bindgen's generated string decoder changed".into()

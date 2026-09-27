@@ -43,12 +43,15 @@
 				"CARGO_*",
 				"RUST_*",
 				"RUSTFLAGS",
+				"SHARUN_LINK",
+				"ANYLINUX_LIB_SOURCE",
 				"FORCE_COLOR",
 				"NEXTEST_*",
 				"BUILD_ENV",
 				"PREVIEW"
 			],
-			"passThroughEnv": ["SCCACHE_*", "RUSTC_WRAPPER", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
+			"passThroughEnv": ["SCCACHE_*", "RUSTC_WRAPPER", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"],
+			"cache": false
 		},
 		"lint": {
 			"env": [
@@ -100,7 +103,17 @@
 				"FORCE_COLOR",
 				"NEXTEST_*"
 			],
-			"passThroughEnv": ["SCCACHE_*", "RUSTC_WRAPPER", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
+			"passThroughEnv": [
+				"DISPLAY",
+				"XAUTHORITY",
+				"WAYLAND_DISPLAY",
+				"XDG_RUNTIME_DIR",
+				"DBUS_SESSION_BUS_ADDRESS",
+				"XDG_CURRENT_DESKTOP",
+				"XDG_SESSION_TYPE",
+				"WEBKIT_DISABLE_DMABUF_RENDERER",
+				"JAVA_HOME"
+			]
 		},
 		"fix": {},
 		"fix:ancillary": {

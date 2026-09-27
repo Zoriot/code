@@ -11,8 +11,8 @@ use tauri::{Listener, Manager};
 use tauri_plugin_fs::FsExt;
 use theseus::prelude::*;
 
-type AppHandle = tauri::AppHandle<tauri::Cef>;
-type Window = tauri::Window<tauri::Cef>;
+type AppHandle = tauri::AppHandle<tauri::DynRuntime>;
+type Window = tauri::Window<tauri::DynRuntime>;
 
 mod api;
 
@@ -117,6 +117,7 @@ async fn set_restart_after_pending_update(
 
 // if Tauri app is called with arguments, then those arguments will be treated as commands
 // ie: deep links or filepaths for .mrpacks
+#[tauri_runtime_cef::cef_entry_point]
 fn main() {
     rustls::crypto::aws_lc_rs::default_provider()
         .install_default()
@@ -150,15 +151,10 @@ fn main() {
 
     tracing::info!("Initialized tracing subscriber. Loading Modrinth App!");
 
-    let mut builder = tauri::Builder::<tauri::Cef>::new();
+    let cef = tauri_runtime_cef::Cef::default();
 
-    #[cfg(target_os = "linux")]
-    {
-        builder = builder.command_line_args([
-            ("no-sandbox", Some("true")),
-            ("no-zygote", Some("true")),
-        ]);
-    }
+    let mut builder = tauri::Builder::default()
+      .runtime(cef);
 
     #[cfg(target_os = "macos")]
     {

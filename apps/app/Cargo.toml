@@ -25,16 +25,47 @@ serde_json = { workspace = true }
 serde_with = { workspace = true }
 rustls = { workspace = true }
 sha2 = { workspace = true }
-tauri-plugin-deep-link = { workspace = true }
-tauri-plugin-dialog = { workspace = true }
-tauri-plugin-fs = { workspace = true }
-tauri-plugin-http = { workspace = true }
-tauri-plugin-opener = { workspace = true }
-tauri-plugin-os = { workspace = true }
-tauri-plugin-single-instance = { workspace = true }
+tauri-plugin-deep-link = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-dialog = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "feat/cef", default-features = false, features = ["xdg-portal"] }
+
+tauri-plugin-fs = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-http = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-opener = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-os = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-single-instance = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
+
+tauri-plugin-window-state = {
+	git = "https://github.com/tauri-apps/plugins-workspace",
+	branch = "feat/cef"
+}
 tauri-plugin-updater = { workspace = true }
-tauri-plugin-window-state = { workspace = true }
-tauri-runtime-cef = { workspace = true }
+tauri-runtime-cef = { workspace = true, features = [
+	"devtools",
+	"macos-private-api",
+] }
 theseus = { workspace = true, features = ["tauri"] }
 thiserror = { workspace = true }
 tokio = { workspace = true, features = ["time"] }
@@ -46,8 +77,10 @@ uuid = { workspace = true, features = ["serde", "v4"] }
 [dependencies.tauri]
 workspace = true
 default-features = false
-features = ["cef", "devtools", "macos-private-api", "protocol-asset"]
-
+features = [
+	"protocol-asset",
+	"macos-private-api",
+]
 [build-dependencies]
 tauri-build = { workspace = true, features = ["codegen"] }
 

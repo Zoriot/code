@@ -14,9 +14,9 @@ use uuid::Uuid;
 use crate::install::InstallJobSnapshot;
 
 #[cfg(feature = "tauri")]
-type AppHandle = tauri::AppHandle<tauri::Cef>;
+type AppHandle = tauri::AppHandle<tauri::DynRuntime>;
 #[cfg(feature = "tauri")]
-type Window = tauri::Window<tauri::Cef>;
+type Window = tauri::Window<tauri::DynRuntime>;
 
 pub mod emit;
 
